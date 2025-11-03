@@ -1,20 +1,20 @@
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function DCM = ep_to_dcm(beta)
+function DCM = ep_to_dcm(quat)
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %{
-    Computes the corresponding DCM from an Euler parameter set.
+    Computes the corresponding DCM from a quaternion set.
     
     Inputs:
-        beta - 1x4 vector that contains Euler parameter set
+        quat - 4x1 array that quaternion set
     Outputs
         DCM  - 3x3 Direction Cosine Matrix
     
 %}
 %------------------------------
 
-DCM = [beta(1)^2 + beta(2)^2 - beta(3)^2 - beta(4)^2         2*(beta(2)*beta(3) + beta(1)*beta(4))            2*(beta(2)*beta(4) - beta(1)*beta(3));
-            2*(beta(2)*beta(3) - beta(1)*beta(4))       beta(1)^2 - beta(2)^2 + beta(3)^2 - beta(4)^2         2*(beta(3)*beta(4) + beta(1)*beta(2));
-            2*(beta(2)*beta(4) + beta(1)*beta(3))            2*(beta(3)*beta(4) - beta(1)*beta(2))       beta(1)^2 - beta(2)^2 - beta(3)^2 + beta(4)^2];
+DCM = [quat(1)^2 + quat(2)^2 - quat(3)^2 - quat(4)^2         2*(quat(2)*quat(3) + quat(1)*quat(4))            2*(quat(2)*quat(4) - quat(1)*quat(3));
+            2*(quat(2)*quat(3) - quat(1)*quat(4))       quat(1)^2 - quat(2)^2 + quat(3)^2 - quat(4)^2         2*(quat(3)*quat(4) + quat(1)*quat(2));
+            2*(quat(2)*quat(4) + quat(1)*quat(3))            2*(quat(3)*quat(4) - quat(1)*quat(2))       quat(1)^2 - quat(2)^2 - quat(3)^2 + quat(4)^2];
 
 end
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

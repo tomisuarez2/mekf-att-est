@@ -1,5 +1,5 @@
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function ep_final = quat_prod(quat_1, quat_2)
+function ep_final = quat_prod(quat_2, quat_1)
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %{
     Computes the quaternion product between ep_1 and ep_2.
