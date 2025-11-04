@@ -8,15 +8,16 @@ est.bg = zeros(3,length(sensors.gyro.time));
 est.time = sensors.gyro.time;
 
 % Initialize variables
-q_nom = [1 0 0 0]';        % Quaternion current estimation
-dq0   = [0 0 0]';          % Quaternion orientation error current estimation
-bg    = [0 0 0]';          % Gyro bias current estimation
-dbg0  = zeros(3,1);        % Gyro bias error current estimation
-dx    = [dq0; dbg0];       % Error state current estimation
-P = diag([(1e-2)^2,(1e-2)^2,(1e-2)^2,(1e-3)^2,(1e-3)^2,(1e-3)^2]);   % Error-state covariance
+q_nom = [1 0 0 0]';                             % Quaternion current estimation
+dq0   = [8.5e-3 8.5e-3 8.5e-3]';                % Quaternion orientation error current estimation
+bg    = [0 0 0]';                               % Gyro bias current estimation
+dbg0  = [1e-3 1e-3 1e-3]';                       % Gyro bias error current estimation
+dx    = [dq0; dbg0];                            % Error state current estimation
+P = diag([(8.5e-3)^2,(8.5e-3)^2,(8.5e-3)^2, ...
+          (1e-3)^2,(1e-3)^2,(1e-3)^2]);         % Error-state covariance
 
 % Process covariance matrix
-Q = blkdiag(R_gyro, n_bg); 
+Q = blkdiag(R_gyro, Q_bg); 
 
 % Sensor time indices
 i_acc = 1; 
@@ -40,7 +41,7 @@ for k = 1:length(sensors.gyro.time) % Simulates new gyro available calibrated me
     Phi = eye(6);
     Phi(1:3,1:3) = Phi(1:3,1:3) - skew(est_omega_B)*dt;
     Phi(1:3,4:6) = -0.5*eye(3)*dt;
-    Lambda = blkdiag(-0.5*eye(3), eye(3))*dt; 
+    Lambda = blkdiag(-0.5*eye(3), eye(3))*sqrt(dt); 
 
     % Error state propagation
     dx = Phi*dx;
@@ -58,7 +59,7 @@ for k = 1:length(sensors.gyro.time) % Simulates new gyro available calibrated me
     if acc_available || mag_available
         H_all = [];
         z_all = [];
-        R_all = [];
+        R = {};
     
         % Accelerometer update (gravity reference)
         if acc_available
@@ -72,7 +73,7 @@ for k = 1:length(sensors.gyro.time) % Simulates new gyro available calibrated me
             
             H_all = [H_all; H_acc];
             z_all = [z_all; z];
-            R_all = blkdiag(R_all, R_acc);
+            R{end+1} = R_acc;
     
             i_acc = i_acc + 1;
         end
@@ -89,11 +90,13 @@ for k = 1:length(sensors.gyro.time) % Simulates new gyro available calibrated me
             
             H_all = [H_all; H_mag];
             z_all = [z_all; z];
-            R_all = blkdiag(R_all, R_mag);
+            R{end+1} = R_mag;
     
             i_mag = i_mag + 1;
         end
-    
+        
+        R_all = blkdiag(R{:});
+
         % Error state update
         S = H_all*P*H_all' + R_all;
         K = P*H_all'/S;
@@ -107,8 +110,9 @@ for k = 1:length(sensors.gyro.time) % Simulates new gyro available calibrated me
         
         % Estimated bias gyro update
         bg = bg + dx(4:6);  
-        dx = zeros(6,1);
 
+        % Reset
+        dx = zeros(6,1);
     end
     est.q(:,k) = q_nom;
     est.bg(:,k) = bg;
