@@ -1,5 +1,5 @@
-function [arrowHandle, textHandle] = drawArrow(vec, scale, color, label, linestyle)
-%DRAWARROW Draws an arrow and label for a vector
+function [arrowHandle, textHandle] = draw_arrow(vec, scale, color, label, linestyle)
+%DRAW_ARROW Draws an arrow and label for a vector
 %   vec       - [3x1] vector to plot
 %   scale     - scalar for visualization scaling
 %   color     - color of arrow

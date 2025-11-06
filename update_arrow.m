@@ -1,5 +1,5 @@
-function updateArrow(arrowHandle, textHandle, vec, scale)
-%UPDATEARROW Updates arrow direction and visibility
+function update_arrow(arrowHandle, textHandle, vec, scale)
+%UPDATE_ARROW Updates arrow direction and visibility
 %   arrowHandle - handle to existing quiver3 arrow
 %   textHandle  - handle to existing text
 %   vec         - new [3x1] vector direction
