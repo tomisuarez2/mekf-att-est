@@ -1,0 +1,1 @@
+<video src="MEKFAttitudeEstimation/Animation/truth_attitude_history.mp4" controls title="Real attitude evolution over time" width="600"></video>
