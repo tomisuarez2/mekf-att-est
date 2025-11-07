@@ -2,6 +2,9 @@
 
 clear; close all; clc;
 
+addpath('./Attitude kinematics function/')
+addpath('./Sensor and real data/')
+
 fprintf('>>> Initializing MEKF algorithm...\n');
 
 %% ================ Load IMU and Trajectory Data  ================
@@ -64,6 +67,9 @@ generate_estimation_plots(est, truth);
 
 % Calculate estimation performance if truth data is available
 calculate_estimation_performance(est, truth);
+
+rmpath('./Attitude kinematics function/')
+rmpath('./Sensor and real data/')
 
 %% ================ Helper Functions ================
 

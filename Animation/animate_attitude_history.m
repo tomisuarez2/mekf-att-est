@@ -31,6 +31,7 @@ function animate_attitude_history(time_vector, quat_history, ang_vel_history, ob
 
 %}
 % ----------------------------------------------------------------------------------------------------------------------
+    addpath('Attitude kinematics function\')
 
     % Parse optional parameters
     p = inputParser;
@@ -54,14 +55,14 @@ function animate_attitude_history(time_vector, quat_history, ang_vel_history, ob
     validate_data_consistency(time_vector, quat_cell, ang_vel_cell, n_objects);
     
     % Initialize figure and video
-    [figure3D, video] = initialize_animation(config, animation_filename);
+    [figure3D, video] = initialize_animation(config, strcat('./Animation/',animation_filename));
     
     % Load and prepare 3D objects
     object_handles = prepare_3d_objects(objects, n_objects, config);
     
     % Initialize plots
     plot_handles = initialize_plots(objects, time_vector, ang_vel_cell, n_objects);
-
+    
     % Animation loop
     fprintf('>>> Generating animation with %d frames...\n', length(time_vector));
     animation_loop(figure3D, video, time_vector, quat_cell, ang_vel_cell, ...
@@ -69,8 +70,9 @@ function animate_attitude_history(time_vector, quat_history, ang_vel_history, ob
 
     % Cleanup
     close(video);
-    fprintf('>>> Animation saved as: %s.mp4\n', animation_filename);
-    %}
+    fprintf('>>> Animation saved as: %s.mp4\n', strcat('./Animation/',animation_filename));
+    
+    rmpath('Attitude kinematics function\')
 end
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -281,6 +283,16 @@ function object_handles = prepare_3d_objects(objects, n_objects, config)
         object_handles.angular_velocity{i} = [];
     end
     
+    if iscell(objects) && isfield(objects{1},'name')
+        % Create legends
+        all_handles = cat(2, object_handles.patches{:});
+        all_names = cell(1, n_objects); 
+        for i = 1:n_objects
+            all_names{i} = objects{i}.name; 
+        end
+        legend(all_handles, all_names);
+    end
+    
     object_handles.title = title(sprintf('Attitude History Animation\n t = %.2f s', 0));
     object_handles.max_dim = max_dim;
 end
@@ -291,7 +303,14 @@ function plot_handles = initialize_plots(objects, time_vector, ang_vel_cell, n_o
     colors = lines(4*n_objects);
     
     % Quaternion plot
-    subplot(2, 4, [3, 4]);
+    
+    if ~any(~cellfun(@isempty, ang_vel_cell))
+        subplot(2, 4, [3, 4, 7, 8]);
+    else
+        subplot(2, 4, [3, 4]);
+    end
+    %}
+    %subplot(2, 4, [3, 4]);
     hold on; grid on;
     title('Attitude Quaternions');
     xlabel('Time [s]');
@@ -342,6 +361,9 @@ end
 
 function auto_scale_plots(plot_handles, quat_cell, ang_vel_cell, current_index, n_objects)
 % AUTO_SCALE_PLOTS Automatically adjust y-axis limits based on visible data
+    
+    % Angular velocity plot handles presence
+    ang_vel_plots = ~isempty(plot_handles.angular_velocities{1});
 
     % Auto-scale quaternion plot
     if current_index > 0
@@ -366,14 +388,18 @@ function auto_scale_plots(plot_handles, quat_cell, ang_vel_cell, current_index, 
             
             % Ensure we have valid limits
             if ~isempty(y_lim) && all(isfinite(y_lim)) && y_lim(1) < y_lim(2)
-                subplot(2, 4, [3, 4]);
+                if ang_vel_plots
+                    subplot(2, 4, [3, 4]);
+                else
+                    subplot(2, 4, [3, 4, 7, 8]);
+                end
                 ylim(y_lim);
             end
         end
     end
     
     % Auto-scale angular velocity plot
-    if current_index > 0 && ~isempty(plot_handles.angular_velocities{1})
+    if current_index > 0 && ang_vel_plots
         % Get all angular velocity data up to current time
         all_omega_data = [];
         for i = 1:n_objects
@@ -414,7 +440,7 @@ function update_time_plots(plot_handles, time_vector, quat_cell, ang_vel_cell, c
     for i = 1:n_objects
         if ~isempty(plot_handles.quaternions{i})
             % Update each quaternion component (q0, q1, q2, q3)
-            for j = 1:4
+            for j = 1:4 
                 if current_index == 1
                     % Initialize with first point
                     set(plot_handles.quaternions{i}(j), ...
@@ -500,4 +526,111 @@ function max_dim = compute_max_dimension(vertices)
 % COMPUTE_MAX_DIMENSION Calculate maximum dimension of vertices
     ranges = max(vertices) - min(vertices);
     max_dim = max(ranges);
+end
+
+function draw_fixed_reference_axes(scale, color, letter)
+%DRAW_FIXED_REFERENCE_AXES Draws fixed reference frame unit vectors
+%   scale  - length of each axis vector (scalar)
+%   color  - color of the reference frame unit vector axes
+%   letter - letter of the reference frame unit vector axes
+    if ~ischar(letter) && ~isempty(letter) 
+        error("Axis reference identification must be a letter or word...")
+    end
+    if strcmp(letter,'NED') % NED reference system
+        [~,~] = draw_arrow([1 0 0], scale, color, 'Y_e');
+        [~,~] = draw_arrow([0 1 0], scale, color, 'X_e');
+        [~,~] = draw_arrow([0 0 1], scale, color, '-Z_e');
+    else
+        [~,~] = draw_arrow([1 0 0], scale, color, strcat('X_',letter));
+        [~,~] = draw_arrow([0 1 0], scale, color, strcat('Y_',letter));
+        [~,~] = draw_arrow([0 0 1], scale, color, strcat('Z_',letter));
+    end
+
+end
+
+function [xArrow, yArrow, zArrow, xText, yText, zText] = draw_moving_reference_axes(R, scale, color, letter)
+%DRAW_MOVING_REFERENCE_AXES Draws body axes in inertial frame
+%   R      - DCM (columns are body axes)
+%   scale  - arrow length scaling factor
+%   color  - color of the reference frame unit vector axes
+%   letter - letter of the reference frame unit vector axes
+    if ~ischar(letter) && ~isempty(letter) 
+        error("Axis reference identification must be a letter or word...")
+    end
+    
+    xVec = R(:,1) * scale;
+    yVec = R(:,2) * scale;
+    zVec = R(:,3) * scale;
+
+    if strcmp(letter,'NED') % NED reference system
+        [xArrow,xText] = draw_arrow(xVec, scale, color, 'Y_e');
+        [yArrow,yText] = draw_arrow(yVec, scale, color, 'X_e');
+        [zArrow,zText] = draw_arrow(zVec, scale, color, '-Z_e');
+    else
+        [xArrow,xText] = draw_arrow(xVec, scale, color, strcat('X_',letter));
+        [yArrow,yText] = draw_arrow(yVec, scale, color, strcat('Y_',letter));
+        [zArrow,zText] = draw_arrow(zVec, scale, color, strcat('Z_',letter));
+    end
+end
+
+function [arrowHandle, textHandle] = draw_arrow(vec, scale, color, label, linestyle)
+%DRAW_ARROW Draws an arrow and label for a vector
+%   vec       - [3x1] vector to plot
+%   scale     - scalar for visualization scaling
+%   color     - color of arrow
+%   label     - string for label (e.g., 'w' or 'wr')
+%   linestyle - optional, e.g., '--' for dashed line
+
+    if nargin < 5, linestyle = '-'; end
+    components = vec * scale;
+    textPos = vec * scale * 1.05;
+
+    arrowHandle = quiver3(0, 0, 0, ...
+        components(1), components(2), components(3), ...
+        'Color', color, 'LineWidth', 1.5, 'MaxHeadSize', 0.5, ...
+        'LineStyle', linestyle);
+
+    textHandle = text(textPos(1), textPos(2), textPos(3), label, 'Color', color);
+    
+end
+
+function update_arrow(arrowHandle, textHandle, vec, scale)
+%UPDATE_ARROW Updates arrow direction and visibility
+%   arrowHandle - handle to existing quiver3 arrow
+%   textHandle  - handle to existing text
+%   vec         - new [3x1] vector direction
+%   scale       - scaling factor
+
+    components = vec * scale;
+    textPos = vec * scale * 1.05;
+
+    normVec = norm(vec);
+    if normVec < 1e-3
+        set(arrowHandle, 'Visible', 'off');
+        set(textHandle, 'Visible', 'off');
+    else
+        set(arrowHandle, 'UData', components(1), ...
+                         'VData', components(2), ...
+                         'WData', components(3), ...
+                         'Visible', 'on');
+        set(textHandle, 'Position', textPos, ...
+                        'Visible', 'on');
+    end
+end
+
+function update_reference_axes(rf, R, scale)
+%UPDATE_REFERNCE_AXES Updates orientation and labels of reference axes
+%   rf    - struct with reference frame arrows handles and text handles
+%   R     - DCM at current time
+%   scale - scaling factor
+
+    % Axes vectors
+    xVec = R(:,1);
+    yVec = R(:,2);
+    zVec = R(:,3);
+
+    % Update arrows
+    update_arrow(rf.bX, rf.iTxt, xVec, scale);
+    update_arrow(rf.bY, rf.jTxt, yVec, scale);
+    update_arrow(rf.bZ, rf.kTxt, zVec, scale);
 end

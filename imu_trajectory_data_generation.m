@@ -2,6 +2,8 @@
 
 clear; close all; clc;
 
+addpath('./Example trajectory/')
+
 %% ================ Configuration Parameters ================
 
 % Sensor noise characteristics 
@@ -77,6 +79,10 @@ save_generated_data(truth, sensors, CONFIG);
 generate_validation_plots(truth, sensors);
 
 fprintf('>>> Trajectory and simulated IMU measurements have been generated.\n');
+
+rmpath('./Example trajectory/');
+
+clear;
 
 %% ================ Helper Functions ================
 
@@ -160,7 +166,7 @@ function save_generated_data(truth, sensors, config)
     timestamp = datestr(dt, 'yyyy_mm_dd-HH_MM_SS');
     
     % Save main data file
-    filename = sprintf('imu_trajectory_data_%s.mat', timestamp);
+    filename = sprintf('Sensor and real data/imu_trajectory_data_%s.mat', timestamp);
     save(filename, 'truth', 'sensors', 'config', '-v7.3');
     fprintf('>>> Data saved to: %s\n', filename);
 end
