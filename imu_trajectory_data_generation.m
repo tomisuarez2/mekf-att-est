@@ -190,28 +190,28 @@ function generate_validation_plots(truth, sensors)
     
     % Gyro bias plot
     figure('Name', 'Gyro Bias', 'Position', [300 300 800 400]);
-    plot(sensors.gyro.time, truth.gyro_bias'); grid on;
+    stairs(sensors.gyro.time, truth.gyro_bias'); grid on;
     xlabel('Time [s]'); ylabel('b_g [rad/s]'); 
     title('Gyro Drift Bias');
     legend('X', 'Y', 'Z');
     
     % Gyro measurements plot
     figure('Name', 'Gyro Measurements', 'Position', [300 300 800 400]);
-    plot(sensors.gyro.time, sensors.gyro.data'); grid on;
+    stairs(sensors.gyro.time, sensors.gyro.data'); grid on;
     xlabel('Time [s]'); ylabel('[rad/s]');
     title('Gyro Measurements');
     legend('\omega_x', '\omega_y', '\omega_z');
     
     % Accelerometer measurements plot
     figure('Name', 'Accelerometer Measurements', 'Position', [300 300 800 400]);
-    plot(sensors.accel.time, sensors.accel.data'); grid on;
+    stairs(sensors.accel.time, sensors.accel.data'); grid on;
     xlabel('Time [s]'); ylabel('[m/s^2]');
     legend('a_x', 'a_y', 'a_z');
     title('Accelerometer Measurements');
     
     % Magnetometer measurements plot
     figure('Name', 'Magnetometer Measurements', 'Position', [300 300 800 400]);
-    plot(sensors.mag.time, sensors.mag.data'); grid on;
+    stairs(sensors.mag.time, sensors.mag.data'); grid on;
     xlabel('Time [s]'); ylabel('Normalized Units [-]');
     title('Magnetometer Measurements');
     legend('m_x', 'm_y', 'm_z');
