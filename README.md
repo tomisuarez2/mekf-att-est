@@ -5,6 +5,8 @@
 ![Gyroscope measurements](Images/gyro_measurements.jpg)
 ![Truth Estimated Quaternions](Images/truth_est_attitude_quaternions.jpg)
 ![Attitude Estimation Error](Images/attitude_estimation_error.jpg)
-[Truth Attitude History](Animation/truth_attitude_history.mp4)
-truth_vs_estimated_attitude_history.mp4
-[Truth vs Estimated Attitude History](Animation/truth_vs_estimated_attitude_history.mp4)
+
+https://github.com/user-attachments/assets/ec280397-2bb1-4f87-9f26-4b9174bd0a65
+
+https://github.com/user-attachments/assets/695bc355-3f50-4a40-a633-9e029f993064
+
