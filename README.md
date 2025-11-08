@@ -1,1 +1,10 @@
-<video src="MEKFAttitudeEstimation/Animation/truth_attitude_history.mp4" controls title="Real attitude evolution over time" width="600"></video>
+![Truth ground trajectory](Images/drone_ground_truth_trajectory.jpg)
+![Truth attitude quaternions](Images/truth_attitude_quaternions.jpg)
+![Magnetometer measurements](Images/magnetometer_measurements.jpg)
+![Accelerometer measurements](Images/accelerometer_measurements.jpg)
+![Gyroscope measurements](Images/gyro_measurements.jpg)
+![Truth Estimated Quaternions](Images/truth_est_attitude_quaternions.jpg)
+![Attitude Estimation Error](Images/attitude_estimation_error.jpg)
+[Truth Attitude History](Animation/truth_attitude_history.mp4)
+truth_vs_estimated_attitude_history.mp4
+[Truth vs Estimated Attitude History](Animation/truth_vs_estimated_attitude_history.mp4)
