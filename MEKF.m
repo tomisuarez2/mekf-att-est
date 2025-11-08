@@ -300,13 +300,13 @@ function generate_estimation_plots(est, truth)
     title('Estimated Gyro Bias');
     legend('$$\hat{b}_{gx}$$', '$$\hat{b}_{gy}$$', '$$\hat{b}_{gz}$$', 'Location', 'best', 'Interpreter', 'Latex');
     
-    % Quaternion norm (should be close to 1)
+    % Quaternion norm 
     figure('Name', 'Quaternion Norm', 'Position', [300 300 600 400]);
     q_norm = sqrt(sum(est.q.^2, 1));
     plot(est.time, q_norm, 'LineWidth', 1.5);
     grid on;
     xlabel('Time [s]'); ylabel('Norm');
-    title('Quaternion Norm (should be 1)');
+    title('Quaternion Norm');
     ylim([0.99, 1.01]);
 end
 
