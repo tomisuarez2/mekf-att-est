@@ -1,8 +1,8 @@
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function ep_final = quat_prod(quat_2, quat_1)
+function quat_final = quat_prod(quat_2, quat_1)
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 %{
-    Computes the quaternion product between ep_1 and ep_2.
+    Computes the quaternion product between quat_1 and quat_2 as quat_2 x quat_1.
     
     Inputs:
         quat_1     - 4x1 vector that represents first set of quaternions
@@ -17,7 +17,7 @@ function ep_final = quat_prod(quat_2, quat_1)
           quat_1(2)  quat_1(1) -quat_1(4)  quat_1(3);
           quat_1(3)  quat_1(4)  quat_1(1) -quat_1(2);
           quat_1(4) -quat_1(3)  quat_1(2)  quat_1(1)];
-    ep_final = GB*quat_2;
+    quat_final = GB*quat_2;
 
 end
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
