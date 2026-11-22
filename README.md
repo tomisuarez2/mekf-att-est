@@ -1,8 +1,8 @@
 # Multicopter Attitude Estimation using MEKF
 
-## 📌 Overview
+## Overview
 
-This repository presents the modeling, derivation, and MATLAB implementation of a **Multiplicative Extended Kalman Filter (MEKF)** for multicopter attitude estimation.
+This repository presents a MATLAB implementation of a **Multiplicative Extended Kalman Filter (MEKF)** for multicopter attitude estimation.
 
 The objective of this project is to demonstrate a solid understanding of:
 
@@ -11,11 +11,9 @@ The objective of this project is to demonstrate a solid understanding of:
 * Error-state Kalman filtering
 * Rigid body orientation representation using quaternions
 
-The work is based on a full theoretical development, followed by a simulation-based validation.
-
 ---
 
-## 🧠 Problem Description
+## Problem Description
 
 In low-cost inertial navigation systems, the orientation of a rigid body cannot be measured directly with sufficient accuracy.
 
@@ -26,7 +24,7 @@ The goal is to combine these measurements to obtain a robust and consistent esti
 
 ---
 
-## ⚙️ Approach
+## Approach
 
 The estimation problem is addressed using a **Multiplicative Extended Kalman Filter (MEKF)** in an **error-state formulation**.
 
@@ -40,7 +38,7 @@ Key features of the approach:
 
 ---
 
-## 🧪 Simulation
+## Simulation
 
 The filter is validated in simulation using:
 
@@ -59,7 +57,7 @@ The filter is validated in simulation using:
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 ├── src/           # MATLAB implementation
@@ -69,7 +67,7 @@ The filter is validated in simulation using:
 ```
 ---
 
-## 📊 Results
+## Results
 
 <div align="center">
   <img src="results/quat_0_est.png" width="85%" />
@@ -111,27 +109,22 @@ The filter is validated in simulation using:
 ```
 ---
 
-## 📚 References
+## References
 
 * Crassidis & Junkins — *Optimal Estimation of Dynamic Systems*
-* Markley — *Attitude Error Representations for Kalman Filtering*
-* Shuster — *Three-Axis Attitude Determination*
-* Quan — *Multicopter Design and Control*
 
 ---
 
-## 🚀 Key Takeaways
+## Key Takeaways
 
 This project demonstrates:
 
-* Ability to derive a nonlinear estimator from first principles
-* Understanding of estimation on manifolds (SO(3))
 * Practical implementation of Kalman filtering
 * Sensor fusion for real-world systems
 
 ---
 
-## 🛠️ Future Work
+## Future Work
 
 * Real sensor data validation
 * Adaptive noise tuning
@@ -140,7 +133,7 @@ This project demonstrates:
 
 ---
 
-## 🛰️ Contact
+## Contact
 
 If you have questions or want to collaborate, feel free to reach out:
 **Tomás Suárez**

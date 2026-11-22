@@ -7,8 +7,8 @@ function [mag_truth, sp_force_truth] = compute_sensor_measurements(acc, quat, co
     
     for k = 1:n_points
         % Specific force = acceleration - gravity 
-        R_be = quat_to_dcm(quat(:, k));
-        sp_force_truth(:, k) = R_be*(acc(:, k) - config.g_ned);
+        R_be = quatToDCM(quat(:, k));
+        sp_force_truth(:, k) = R_be*(acc(:,k) - config.g_ned);
         % Magnetic field in body frame
         mag_truth(:, k) = R_be * config.m_ned;
     end

@@ -1,4 +1,4 @@
-function calculate_estimation_performance_MEKF(est_time, est_quat, truth_time, truth_quat)
+function calculate_estimation_performance(est_time, est_quat, truth_time, truth_quat)
 % CALCULATE_ESTIMATION_PERFORMANCE Calculate estimation performance metrics
     
     lw_default = 2.5; % LineWidth por defecto
@@ -33,7 +33,7 @@ function calculate_estimation_performance_MEKF(est_time, est_quat, truth_time, t
     % quaternion error
     q_error = zeros(1, length(est_time));
     for k = 1:length(est_time)
-        q_err = quat_prod(truth_q_interp(:, k), quat_conj(est_quat(:, k)));
+        q_err = quatProd(quatConj(est_quat(:, k)), truth_q_interp(:, k));
         q_error(k) = 2 * acos(abs(q_err(1)));  % Angular error in radians
     end
     
@@ -48,23 +48,19 @@ function calculate_estimation_performance_MEKF(est_time, est_quat, truth_time, t
     ax_main = axes;
     hold(ax_main, 'on');
     grid(ax_main, 'on');
-    plot(est_time, rad2deg(q_error), 'Color', '#77B5FE', 'LineWidth', 2, 'DisplayName', 'Error');
+    plot(est_time, rad2deg(q_error), 'Color', '#77B5FE', 'LineWidth', lw_default, 'DisplayName', 'Error');
     
     %------------------ Principal axis format ------------------%
-    xlabel('Time [s]'); 
-    ylabel('Attiude error [deg]');
-    title(sprintf('Attitude error represented as angle'), 'FontSize', 22, ...
+    xlabel('Time [s]', 'FontSize', label_fontsize, 'Interpreter', 'latex'); 
+    ylabel('Attiude error [deg]', 'FontSize', label_fontsize, 'Interpreter', 'latex');
+    title(sprintf('Attitude error represented as angle'), 'FontSize', title_fontsize, ...
         'FontName', 'Times New Roman', ...
         'FontWeight', 'bold', ...
-        'Interpreter', 'latex', ...
-        'Color', 'k');
+        'Interpreter', 'latex');
     ax_main.FontSize = ticks_fontsize;
     ax_main.LineWidth = lw_auxiliary;
     
     %------------------ Legend ------------------%
     lgd = legend('show', 'Location', 'northeast');
     lgd.Box = 'on';
-    lgd.Color = 'white';
-    lgd.EdgeColor = 'black';
-    lgd.LineWidth = 1;
 end

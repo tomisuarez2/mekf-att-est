@@ -4,7 +4,7 @@ clear; close all; clc;
 
 addpath(genpath('../src'));
 
-plots = true;
+plots = false;
 save = true;
 
 %% ================ Configuration Parameters ================

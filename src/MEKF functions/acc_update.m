@@ -1,7 +1,5 @@
-
-function [H_acc, z_acc, R_accw, epsilon] = build_accelerometer_update_MEKF(state, acc_measurement, config)
-% BUILD_ACCELEROMETER_UPDATE_MEKF
-% Accelerometer-based attitude correction for MEKF
+function [H_acc, z_acc, R_accw, epsilon] = acc_update(state, acc_measurement, config)
+% ACC_UPDATE build accelerometer measurement model.
 
     % Parameters
     alpha_max = 500;
@@ -21,19 +19,18 @@ function [H_acc, z_acc, R_accw, epsilon] = build_accelerometer_update_MEKF(state
 
     %% Expected gravity direction in body frame
     % Nominal rotation: body <- inertial (NED)
-    R_bn = quat_to_dcm(state.q_nom);
+    R_be = quatToDCM(state(1:4));
 
     % Gravity direction in NED (unit vector, down)
-    g_n = config.g_ned / g;
+    g_n = [0; 0; 1];
 
     % Expected unit gravity vector in body frame
-    y_hat = -R_bn * g_n;
+    est_g_b = -R_be * g_n;
 
-    %% Innovation (measurement residual)
-    z_acc = y_acc - y_hat;
+    % Innovation (measurement residual)
+    z_acc = y_acc - est_g_b;
 
-    %% Measurement Jacobian (MEKF form)
-    H_acc = [ 2*skew(y_hat), zeros(3,3) ];
+    % Measurement Jacobian (MEKF form)
+    H_acc = [skew(est_g_b), zeros(3,3)];
 
 end
-%}
