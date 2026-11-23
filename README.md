@@ -66,6 +66,30 @@ The filter is validated in simulation using:
 ```
 ---
 
+## How to run
+
+**Requirements:** MATLAB and Aeroespace Toolbox.
+
+```matlab
+% 1. Clone the repository
+% git clone https://github.com/tomisuarez2/mekf-att-est.git
+
+% 2. Run the main simulation
+run('simulations/mekf.m');
+```
+
+---
+
+## Design decisions
+
+- **Why *error-state* and not an EKF over the complete quaternion:** the quaternion has 4 components but only 3 degrees of freedom. Estimating the error with 3 parameters avoids a singular covariance of 4x4 and works in an area where linealization is very good (the error is small and centered at zero).
+- **Why the multiplicative correction:** maintains the restriction of unit standard per construction.
+- **Why estimate bias:** A constant bias integrated into the gyroscope produces linear drift in the attitude; including it in the state allows the filter to observe it through gravity and magnetic field references.
+- **Why compare against TRIAD:** TRIAD uses only vector measurements of each instant, without dynamics or memory. Serves as a baseline for quantifying what fusion brings to the gyroscope and noise model.
+- **How covariance is interpreted:** `P` is used as a diagnostic tool, not just as an intermediate step.
+
+---
+
 ## Results
 
 <div align="center">
@@ -81,15 +105,15 @@ The filter is validated in simulation using:
 </div>
 
 <div align="center">
-  <img src="results/44_cov_evol.png" width="85%" />
+  <img src="results/P44_cov_evol.png" width="85%" />
 </div>
 
 <div align="center">
-  <img src="results/55_cov_evol.png" width="85%" />
+  <img src="results/P55_cov_evol.png" width="85%" />
 </div>
 
 <div align="center">
-  <img src="results/66_cov_evol.png" width="85%" />
+  <img src="results/P66_cov_evol.png" width="85%" />
 </div>
 
 <div align="center">
@@ -125,7 +149,7 @@ The filter is validated in simulation using:
 </div>
 
 
-```bash
+```matlab
 >>> Estimation Performance:
     - Mean attitude error: 0.5175 deg
     - Max attitude error: 3.4381 deg
