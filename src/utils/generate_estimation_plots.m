@@ -91,7 +91,7 @@ function generate_estimation_plots(est, truth, sensors, config)
 
     % Labels (assumes error state = [attitude error (3); gyro bias error (3)])
     if n_states == 6
-        P_labels = {'$P_{1,1}$ ($\delta\theta_1$)', '$P_{2,2}$ ($\delta\theta_2$)', '$P_{3,3}$ ($\delta\theta_3$)', ...
+        P_labels = {'$P_{1,1}$ ($\delta\alpha_1$)', '$P_{2,2}$ ($\delta\alpha_2$)', '$P_{3,3}$ ($\delta\alpha_3$)', ...
             '$P_{4,4}$ ($\delta b_{g1}$)', '$P_{5,5}$ ($\delta b_{g2}$)', '$P_{6,6}$ ($\delta b_{g3}$)'};
         P_titles = {'$P_{1,1}$', '$P_{2,2}$', '$P_{3,3}$', '$P_{4,4}$', '$P_{5,5}$', '$P_{6,6}$'};
     else

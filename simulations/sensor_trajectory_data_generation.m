@@ -15,10 +15,11 @@ CONFIG.fs_gyro = 100;
 CONFIG.fs_mag  = 100;
 
 % Sensor noise characteristics, based on real cheap sensors.
-CONFIG.R_acc   = 2.10e-03*eye(3); % [m^2/s^4]   (The value was characterized for 100 Hz)
-CONFIG.R_gyro  = 4.93e-06*eye(3); % [rad^2/s^2] (The value was characterized for 100 Hz)
-CONFIG.Q_bg    = 2.28e-11*eye(3); % [rad^2/s^3] (The value was characterized for 100 Hz) 
-CONFIG.R_mag   = 1.90e-02*eye(3); % [-]         (The value was characterized for 100 Hz)
+CONFIG.R_acc         = 2.10e-03*eye(3); % [m^2/s^4]   (The value was characterized for 100 Hz)
+CONFIG.R_gyro        = 4.93e-06*eye(3); % [rad^2/s^2] (The value was characterized for 100 Hz)
+CONFIG.Q_bg          = 2.28e-11*eye(3); % [rad^2/s^3] (The value was characterized for 100 Hz) 
+CONFIG.gyro_sys_bias = [0.01; -0.02; 0.03]; % [rad/s] (Example value)
+CONFIG.R_mag         = 1.90e-02*eye(3); % [-]         (The value was characterized for 100 Hz)
 
 % Earth constants
 CONFIG.g_ned  = [0; 0; 9.80665];                    % gravity vector in NED [m/s^2]

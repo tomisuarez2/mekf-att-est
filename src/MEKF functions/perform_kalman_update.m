@@ -11,6 +11,7 @@ function [dx, P] = perform_kalman_update(P, H, z, R)
     dx = K * z;
     
     % Covariance update (Joseph's form)
+    I = eye(size(P));
     IKH = I - K*H;
     P = IKH*P*IKH' + K*R*K';
     P = (P + P')/2;

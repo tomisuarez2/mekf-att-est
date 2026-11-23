@@ -62,12 +62,35 @@ The filter is validated in simulation using:
 ```
 ├── src/           # MATLAB implementation
 ├── simulations/   # Test scenarios and scripts
-├── theory/        # Theoretical derivation (PDF, in Spanish)
 └── results/       # Plots and evaluation
 ```
 ---
 
 ## Results
+
+<div align="center">
+  <img src="results/P11_cov_evol.png" width="85%" />
+</div>
+
+<div align="center">
+  <img src="results/P22_cov_evol.png" width="85%" />
+</div>
+
+<div align="center">
+  <img src="results/P33_cov_evol.png" width="85%" />
+</div>
+
+<div align="center">
+  <img src="results/44_cov_evol.png" width="85%" />
+</div>
+
+<div align="center">
+  <img src="results/55_cov_evol.png" width="85%" />
+</div>
+
+<div align="center">
+  <img src="results/66_cov_evol.png" width="85%" />
+</div>
 
 <div align="center">
   <img src="results/quat_0_est.png" width="85%" />
@@ -101,11 +124,12 @@ The filter is validated in simulation using:
   <img src="results/attitude_estimation_error.png" width="85%" />
 </div>
 
+
 ```bash
 >>> Estimation Performance:
-    - Mean attitude error: 0.1769 deg
-    - Max attitude error: 0.5855 deg
-    - RMS attitude error: 0.2038 deg
+    - Mean attitude error: 0.5175 deg
+    - Max attitude error: 3.4381 deg
+    - RMS attitude error: 0.6854 deg
 ```
 ---
 

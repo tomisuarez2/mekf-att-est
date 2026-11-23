@@ -18,7 +18,8 @@ function [sensors, gyro_bias] = generate_sensor_measurements(time, omega_b, sp_f
     
     % Generate gyroscope measurements
     gyro_clean = interpolate_data(time, omega_b, t_gyro);
-    gyro_bias  = cumsum(chol(config.Q_bg/config.fs_gyro) * randn(3, length(t_gyro)), 2);
+    gyro_rnd_bias  = cumsum(chol(config.Q_bg/config.fs_gyro) * randn(3, length(t_gyro)), 2);
+    gyro_bias = config.gyro_sys_bias + gyro_rnd_bias;
     sensors.gyro.data = gyro_clean + chol(config.R_gyro) * randn(size(gyro_clean)) + gyro_bias;
     sensors.gyro.time = t_gyro;
     sensors.gyro.fs   = config.fs_gyro;

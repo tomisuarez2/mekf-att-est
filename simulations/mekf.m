@@ -10,7 +10,7 @@ fprintf('>>> Initializing MEKF algorithm...\n');
 
 %% ================ Load Sensor and Trajectory Data  ================
 
-file_name = 'truth_sensor_data_2026_22_11-21_37_33.mat';
+file_name = 'truth_sensor_data_2026_23_11-12_42_02.mat';
 try
     imu_trajectory_data = load(file_name);
     sensors = imu_trajectory_data.sensors;
@@ -41,7 +41,6 @@ idx_mag = 1;
 fprintf('>>> Running MEKF estimation...\n');
 
 for k = 1:length(sensors.gyro.time)
-%for k = 1:10
     
     % Calculate time step
     tk = sensors.gyro.time(k);
@@ -49,13 +48,13 @@ for k = 1:length(sensors.gyro.time)
     
     % --- PROPAGATION STEP ---
     [x, dx, P] = propagation_step(x, dx, P, sensors.gyro.data(:, k), dt, Qk);
-    P
+    
     % --- UPDATE STEP ---
     [update_available, measurement_data] = check_sensor_availability(tk, sensors, idx_acc, idx_mag);
     if update_available
         [dx, P, idx_acc, idx_mag] = update_step(x, P, measurement_data, sensors, config, idx_acc, idx_mag);
     end
-    P
+    
     % Apply correction to nominal states
     qs = x(1);
     qv = x(2:4);

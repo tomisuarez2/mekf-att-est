@@ -19,5 +19,5 @@ function [x, dx, P] = initialize_filter_state(truth)
     dx = [dalpha_0; dbg_0];
     
     % Initial error state covariance
-    P = blkdiag((8.5e-3)^2 * eye(3), (1e-4)^2 * eye(3));
+    P = blkdiag((8.5e-2)^2 * eye(3), (1e-1)^2 * eye(3));
 end
